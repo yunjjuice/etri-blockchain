@@ -1,0 +1,73 @@
+<html>
+
+<head>
+  <title>Javascript Login Form Validation</title>
+  <!-- Include CSS File Here -->
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Include JS File Here -->
+  <script language="JavaScript" type="text/javascript" src="js/SHA256.js"></script>
+  <script language="JavaScript" type="text/javascript" src="js/MD5.js"></script>
+  <script type="text/javascript">
+
+  let DEBUG = 1;
+  let attempt = 3; // Variable to count number of attempts.
+  // Below function Executes on click of login button.
+  function validate() {
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+    let passHash = SHA256(password);
+    let passMD5 = CryptoJS.MD5(password);
+
+    if(DEBUG){
+      console.log("username: " + username);
+      console.log("password :" + password);
+      console.log("passHash: " + passHash);
+      console.log("passMD5: " + passMD5);
+    }
+
+    if (username == "soto" && password == "soto") {
+      alert("Login successfully");
+      window.location = "success.html"; // Redirecting to other page.
+      return false;
+    }
+    else {
+      attempt--;// Decrementing by one.
+      alert("You have left " + attempt + " attempt;");
+      // Disabling fields after 3 attempts.
+      if (attempt == 0) {
+        document.getElementById("username").disabled = true;
+        document.getElementById("password").disabled = true;
+        document.getElementById("submit").disabled = true;
+        return false;
+      }
+    }
+  }
+
+
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="main">
+        <h2>Javascript Login Form Validation</h2>
+        <form id="form_id" method="post" name="myform">
+          <label>User Name :</label>
+          <input type="text" name="username" id="username" />
+          <label>Password :</label>
+          <input type="password" name="password" id="password" />
+          <input type="button" value="Login" id="submit" onclick="validate()" />
+        </form>
+        <span>
+          <a href="register.html">Register</a>
+          <br><br>
+          <b class="note">Note : </b>For this demo use following username and password.
+          <br/>
+          <b class="valid">User Name : Formget
+            <br/>Password : formget#123</b>
+          </span>
+        </div>
+      </div>
+    </body>
+
+    </html>

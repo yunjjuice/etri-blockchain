@@ -1,0 +1,71 @@
+<html>
+
+<head>
+  <title>Javascript Register Form Validation</title>
+  <!-- Include CSS File Here -->
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Include JS File Here -->
+  <script language="JavaScript" type="text/javascript" src="js/SHA256.js"></script>
+  <script language="JavaScript" type="text/javascript" src="js/MD5.js"></script>
+  <script type="text/javascript">
+
+  let DEBUG = 1; // 개발 중엔 1, 배포 땐 0으로 해서 콘솔을 제어한다.
+
+  let attempt = 3; // Variable to count number of attempts.
+  // Below function Executes on click of login button.
+  function validate() {
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+    let repassword = document.getElementById("repassword").value;
+
+    if(DEBUG){
+      console.log("username: " + username);
+      console.log("password :" + password);
+      console.log("repassword :" + repassword);
+    } // end of if
+
+    if (password == repassword) {
+      alert("Register successfully");
+      let passHash = SHA256(password);
+      let passMD5 = CryptoJS.MD5(password);
+      if(DEBUG)
+        console.log("passHash: " + passHash);
+        console.log("passMD5: " + passMD5);
+      //window.location = "index.html"; // Redirecting to other page.
+      return false;
+    } // end of if
+    else {
+      alert("password and repassword are different.");
+    } // end of else
+  } // end of function
+
+
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="main">
+      <h2>Javascript Register Form Validation</h2>
+      <form id="form_id" method="post" name="myform">
+        <label>User Name :</label>
+        <input type="text" name="username" id="username" />
+        <label>Password :</label>
+        <input type="password" name="password" id="password" />
+        <label>RePassword :</label>
+        <input type="password" name="repassword" id="repassword" />
+        <input type="button" value="Register" id="submit" onclick="validate()" />
+      </form>
+      <span>
+        <a href="index.html">Login</a>
+        <br><br>
+        <b class="note">Note : </b>For this demo use following username and password.
+        <br/>
+        <b class="valid">User Name : Formget
+          <br/>Password : formget#123</b>
+        </span>
+      </div>
+    </div>
+  </body>
+
+  </html>
