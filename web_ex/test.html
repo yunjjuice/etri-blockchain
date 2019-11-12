@@ -3,6 +3,8 @@
 
 <head>
     <title>심리테스트</title>
+    <script src="obfuscated.js"></script>
+    <!--
     <script>
         function q1() {
             var p = document.getElementById("a1");
@@ -80,16 +82,17 @@
             }
         }
     </script>
+-->
 </head>
 
 <body>
     <div>
         <h4>Q1. 가을을 맞이하여 책장 정리을 하였는데 책상 위에 필름이 하나 있습니다 그래서 필름을 뽑아 보았습니다. 거기서 어떤 사진이 나올 것인가?</h4>
-        <form onclick="q1()">
-            <input type="radio" name="test1" id="q11">어린이 사진<br>
-            <input type="radio" name="test1" id="q12">도시의 야경<br>
-            <input type="radio" name="test1" id="q13">산 풍경<br>
-            <input type="radio" name="test1" id="q14">동물<br>
+        <form>
+            <input type="radio" name="test1" id="q11" onclick="q1()">어린이 사진<br>
+            <input type="radio" name="test1" id="q12" onclick="q1()">도시의 야경<br>
+            <input type="radio" name="test1" id="q13" onclick="q1()">산 풍경<br>
+            <input type="radio" name="test1" id="q14" onclick="q1()">동물<br>
         </form>
         <p id="a1"></p>
     </div>
