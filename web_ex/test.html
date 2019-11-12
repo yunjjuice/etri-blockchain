@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>심리테스트</title>
+    <script>
+        function q1() {
+            var p = document.getElementById("a1");
+            if (document.getElementById("q11").checked) {
+                console.log("1");
+                p.textContent = "눈물과 인정에 약함";
+            }
+            else if (document.getElementById("q12").checked) {
+                console.log("2");
+                p.textContent = "인간 관계가 중요하다고 생각, 술에 의존";
+            }
+            else if (document.getElementById("q13").checked) {
+                console.log("3");
+                p.textContent = "약간의 짐만 있어도 아주 불안해함";
+            }
+            else if (document.getElementById("q14").checked) {
+                console.log("4");
+                p.textContent = "이성으로부터 많은 호응, 자신보다는 남을 생각할 줄 안다";
+            }
+        }
+
+        function q2() {
+            var p = document.getElementById("a2");
+            if (document.getElementById("q21").checked) {
+                p.textContent = "당신은 속마음을 드러내지 않아서 거짓말을 잘하는군요. 양다리 스타일.";
+            }
+            else if (document.getElementById("q22").checked) {
+                p.textContent = "당신은 밝은 성격이며 모임에서 호감을 주는 사람으로 모든이들에게 친절하군요.";
+            }
+            else if (document.getElementById("q23").checked) {
+                p.textContent = "수줍음이 많은 당신. 자신감이 좀 부족하네요. 사람을 사귈 때는 많은 시간이 필요하군요. 만일 남자라면 마마보이일 가능성이 크군요.";
+            }
+            else if (document.getElementById("q24").checked) {
+                p.textContent = "당신은 가볍게 사귀는 걸 좋아하고, 즐거운 만남을 좋아하고, 바람기가 조금 있네요. 하지만 좋아하는 사람에게는 순정파...";
+            }
+        }
+
+        function q3() {
+            var p = document.getElementById("a3");
+            if (document.getElementById("q31").checked) {
+                alert("자존심");
+                p.textContent = "자존심";
+            }
+            else if (document.getElementById("q32").checked) {
+                alert("자식");
+                p.textContent = "자식";
+            }
+            else if (document.getElementById("q33").checked) {
+                alert("사랑");
+                p.textContent = "사랑";
+            }
+            else if (document.getElementById("q34").checked) {
+                alert("재산");
+                p.textContent = "재산";
+            }
+            else if (document.getElementById("q35").checked) {
+                alert("지식");
+                p.textContent = "지식";
+            }
+        }
+        function q4() {
+            var p = document.getElementById("a4");
+            if (document.getElementById("q41").checked) {
+                p.textContent = "단 것을 싫어하는 당신은 서구적인 스타일을 추구한다.<br>물론 지루한 것을 싫어하기 때문에 뭔가 다른 것을 찾기 위해서 뛴다.";
+            }
+            else if (document.getElementById("q42").checked) {
+                p.textContent = "분위기에 압도되는 로맨티스트. 영화감상 등을 취미로 하는 당신은 낭만이라는 것을 안다.";
+            }
+            else if (document.getElementById("q43").checked) {
+                p.textContent = "항상 많은 사람들과 잘 어울리는 당신은 원만한 성격의 소유자로 자기관리를 잘해서 언제나 주변의 모범이 된다.";
+            }
+            else if (document.getElementById("q44").checked) {
+                p.textContent = "무궁무진한 호기심으로 도전하는 당신. 그렇기 때문에 자신의 일에도 열정이 많은 사람이다.";
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <h4>Q1. 가을을 맞이하여 책장 정리을 하였는데 책상 위에 필름이 하나 있습니다 그래서 필름을 뽑아 보았습니다. 거기서 어떤 사진이 나올 것인가?</h4>
+        <form onclick="q1()">
+            <input type="radio" name="test1" id="q11">어린이 사진<br>
+            <input type="radio" name="test1" id="q12">도시의 야경<br>
+            <input type="radio" name="test1" id="q13">산 풍경<br>
+            <input type="radio" name="test1" id="q14">동물<br>
+        </form>
+        <p id="a1"></p>
+    </div>
+    <hr>
+
+    <div>
+        <h4>Q2. 갑자기 당신에게 카메라를 들이댄다면?</h4>
+        <form onclick="q2()">
+            <input type="radio" name="test2" id="q21">멋진 포즈를 취한다<br>
+            <input type="radio" name="test2" id="q22">주위사람들에게 같이 찍자고 한다<br>
+            <input type="radio" name="test2" id="q23">피한다<br>
+            <input type="radio" name="test2" id="q24">장난스런 표정을 짓는다<br>
+        </form>
+        <p id="a2"></p>
+    </div>
+    <hr>
+
+    <div>
+        <h4>Q3. 당신은 지금 사막을 걷고 있습니다. 그런데 같이 동행을 하고 있는 동물이 있습니다.<br>
+            호랑이, 원숭이, 양, 소, 말 이렇게 다섯 가지 동물이 있습니다. 사막을 걷다가 하나씩 버린다면 어느 것부터 버릴 것인가?</h4>
+        <form>
+            <input type="radio" name="test3" id="q31">호랑이<br>
+            <input type="radio" name="test3" id="q32">양<br>
+            <input type="radio" name="test3" id="q33">원숭이<br>
+            <input type="radio" name="test3" id="q34">양<br>
+            <input type="radio" name="test3" id="q35">소<br>
+        </form>
+    </div>
+    <button id="btn3" onclick="q3()">결과보기</button>
+    <p id="a3"></p>
+    <hr>
+
+    <div>
+        <h4>Q4. 좋아하는 빵 : 다음중 좋아하는 빵을 골라보세요.</h4>
+        <form>
+            <input type="radio" name="test4" id="q41" onclick="q3()">바게트빵·식빵<br>
+            <input type="radio" name="test4" id="q42" onclick="q3()">생크림케익<br>
+            <input type="radio" name="test4" id="q43" onclick="q3()">카스테라<br>
+            <input type="radio" name="test4" id="q44" onclick="q3()">페이스트리·파이<br>
+        </form>
+    </div>
+    <button id="btn4" onclick="q4()">결과보기</button>
+    <p id="a4"></p>
+    <hr>
+</body>
+
+</html>
