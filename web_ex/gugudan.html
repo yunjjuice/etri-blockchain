@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>함수 만들기</title>
+    <style>
+        div {
+            margin-bottom: 30px;
+        }
+        hr {
+            border-style: dashed;
+            color: red;
+        }
+        h1{
+            text-align: center;
+            color: indigo;
+            /* background-color: yellow; */
+        }
+        table {
+            border-collapse: collapse;
+            border-style: 5px solid;
+            border-color: cornflowerblue;
+            width: 100%;
+        }
+        th {
+            color: royalblue;
+            font-size: larger;
+        }
+        td {
+            height: 25px;
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+    <script>
+        function gugudan(num) {
+            var i;
+            var j;
+            if (isNaN(num) || num < 1 || num > 9) { // isNaN() : 숫자면 false 반환 
+                alert("잘못된 수");
+                return;
+            }
+
+            document.write("<table border=1>");
+            document.write("<tr>");
+            for(i=num ; i<=9 ; i++){
+                document.write("<th>" + i + "단</th>");
+            }
+            document.write("</tr>");
+            for (i = 1; i <= 9; i++) {
+                document.write("<tr>");
+                for (j = num; j <= 9; j++) {
+                    document.write("<td>" + j + " X " + i + " = " + i * j + "</td>");
+                }
+                document.write("</tr>");
+            }
+            document.write("</table");
+        }
+    </script>
+</head>
+
+<body>
+    <h1>구구단 출력 함수 만들기</h1>
+    <div>
+        <hr>
+    </div>
+    <script>
+        var n = prompt("구구단", "");
+        gugudan(parseInt(n));
+    </script>
+</body>
+
+</html>
