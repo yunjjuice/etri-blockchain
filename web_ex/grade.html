@@ -43,13 +43,29 @@
                 newCell1.innerHTML = i;
                 newCell2.innerHTML = id;
                 newCell3.innerHTML = num;
-                newCell4.innerHTML = "<input type='text' id=kor" + i + ">";
-                newCell5.innerHTML = "<input type='text' id=eng" + i + ">";
-                newCell6.innerHTML = "<input type='text' id=math" + i + ">";
-                newCell7.innerHTML = "<button id=btn" + i + ">평점확인";
+                newCell4.innerHTML = "<input type='number' id=kor" + i + ">";
+                newCell5.innerHTML = "<input type='number' id=eng" + i + ">";
+                newCell6.innerHTML = "<input type='number' id=math" + i + ">";
+
+                var buttonnode = document.createElement('input');
+                buttonnode.setAttribute('type', 'button');
+                buttonnode.setAttribute('id', 'btn' + i);
+                buttonnode.setAttribute('value', '평점확인');
+                newCell7.appendChild(buttonnode);
+                // 이렇게 할 경우 문제 : 여러개 만들고 난 뒤 버튼 누르면 마지막 데이터의 값만 인식해서 다 같은 평점이 나옴
+                buttonnode.onclick = function () { 
+                    var kor = Number(document.getElementById("kor"+i).value);
+                    var eng = Number(document.getElementById("eng"+i).value);
+                    var math = Number(document.getElementById("math"+i).value);
+                    var avg = (kor + eng + math) / 3;
+                    newCell7.removeChild(newCell7.lastChild);
+                    newCell7.innerHTML = avg;
+                    document.getElementById("kor"+i).disabled = true;
+                    document.getElementById("eng"+i).disabled = true;
+                    document.getElementById("math"+i).disabled = true;
+                }
             });
         })
-
     </script>
 
 
