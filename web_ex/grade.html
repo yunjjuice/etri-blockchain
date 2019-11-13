@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>성적 관리</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            border-style: 5px solid;
+        }
+    </style>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        var i = 0;
+        $(document).ready(function () {
+            $("#btn").click(function (event) {
+                event.preventDefault();
+                console.log("update table");
+
+                i++;
+
+                var id = document.getElementById("name").value;
+                var num = document.getElementById("classNumber").value;
+                var table1 = document.getElementById("table1");
+                var table2 = document.getElementById("table2");
+
+                var newRow1 = table1.insertRow(i);
+                var newCell1 = newRow1.insertCell(0);
+                var newCell2 = newRow1.insertCell(1);
+                var newCell3 = newRow1.insertCell(2);
+                newCell1.innerHTML = i;
+                newCell2.innerHTML = id;
+                newCell3.innerHTML = num;
+
+                var newRow2 = table2.insertRow(i);
+                var newCell1 = newRow2.insertCell(0);
+                var newCell2 = newRow2.insertCell(1);
+                var newCell3 = newRow2.insertCell(2);
+                var newCell4 = newRow2.insertCell(3);
+                var newCell5 = newRow2.insertCell(4);
+                var newCell6 = newRow2.insertCell(5);
+                var newCell7 = newRow2.insertCell(6);
+                newCell1.innerHTML = i;
+                newCell2.innerHTML = id;
+                newCell3.innerHTML = num;
+                newCell4.innerHTML = "<input type='text' id=kor" + i + ">";
+                newCell5.innerHTML = "<input type='text' id=eng" + i + ">";
+                newCell6.innerHTML = "<input type='text' id=math" + i + ">";
+                newCell7.innerHTML = "<button id=btn" + i + ">평점확인";
+            });
+        })
+
+    </script>
+
+
+</head>
+
+<body>
+    <h1>성적 관리</h1>
+    <form>
+        이름 <input type="text" id="name">
+        학번 <input type="text" id="classNumber">
+        <button id="btn">입력</button>
+    </form>
+    <br>
+    <br>
+    <br>
+    <table id="table1">
+        <tr>
+            <th>순서</th>
+            <th>이름</th>
+            <th>학번</th>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <br>
+    <table id="table2">
+        <tr>
+            <th>순서</th>
+            <th>학번</th>
+            <th>이름</th>
+            <th>국어</th>
+            <th>영어</th>
+            <th>수학</th>
+            <th>평점</th>
+        </tr>
+    </table>
+</body>
+
+</html>
