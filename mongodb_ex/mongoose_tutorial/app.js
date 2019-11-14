@@ -6,9 +6,17 @@ var app         = express();
 var bodyParser  = require('body-parser');
 var mongoose    = require('mongoose');
 let MONGO_URI   = "mongodb://localhost/database"
+//var fs = require('fs');
+
 // [ CONFIGURE mongoose ]
 // Node의 native Promise 사용
 mongoose.Promise = global.Promise;
+
+// html 연결하기
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);
+app.use(express.static('public'));
 
 // Connect to MongoDB
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true })

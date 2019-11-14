@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-latest.js "></script>
+    <script>
+        $(document).ready(function () {
+            $('#btn_register').on('click', function () {
+                let title = $("#title").val();
+                let author = $("#author").val();
+                let published_date = $("#published_date").val();
+                console.log(title);
+                console.log(author);
+                console.log(published_date);
+
+                if (!title || !author || !published_date) {
+                    alert("등록내용을 빠짐없이 쓰세요");
+                    return;
+                }
+
+                $.post("/api/books", { title: title, author: author, published_date: published_date }, function (data) {
+                    console.log(data);
+                    console.log("successfully post");
+                })
+            });
+
+            $('#btn_search_all').on('click', function () {
+                $.get("/api/books", function (data) {
+                    // console.log(data);
+                    // let a = data[0]._id;
+                    // console.log("data  " + a);
+
+                    var table = document.getElementById("table_search_all");
+                    var length = Object.keys(data).length;
+
+                    for (var i = 0; i < length; i++) {
+                        var newRow = table.insertRow(i + 1);
+                        var newCell1 = newRow.insertCell(0);
+                        var newCell2 = newRow.insertCell(1);
+                        var newCell3 = newRow.insertCell(2);
+                        var newCell4 = newRow.insertCell(3);
+                        newCell1.innerHTML = i + 1;
+                        newCell2.innerHTML = data[i].title;
+                        newCell3.innerHTML = data[i].author;
+                        newCell4.innerHTML = data[i].published_date;
+                    }
+                })
+            });
+
+            $('#btn_search_author').on('click', function () {
+                console.log("author button click");
+                let author = $('#in_author').val();
+
+                $.get("/api/books/author/"+author, { author: author }, function (data) {
+                    console.log("data : " ,data);
+
+                    // 없는 작가명 검색했을 때
+
+                    // 오류 값 반환했을 때
+                    
+
+                    var table = document.getElementById("table_search_author");
+                    var length = Object.keys(data).length;
+
+                    for(var i=0 ; i<length ; i++){
+                        var newRow = table.insertRow(i+1);
+                        var newCell1 = newRow.insertCell(0);
+                        var newCell2 = newRow.insertCell(1);
+                        var newCell3 = newRow.insertCell(2);
+                        newCell1.innerHTML = i+1;
+                        newCell2.innerHTML = data[i].title;
+                        newCell3.innerHTML = data[i].published_date;
+                    }
+                })
+            })
+        });
+
+
+    </script>
+
+
+</head>
+
+<body>
+    <h2>저서 등록</h2>
+    <form>
+        제목 <input type="text" id="title"><br><br>
+        저자 <input type="text" id="author"><br><br>
+        등록일 <input type="date" id="published_date"><br><br>
+        <button id="btn_register">등록</button>
+    </form>
+
+    <h2>검색</h2>
+    <button id="btn_search_all">전체검색</button><br>
+    <table id="table_search_all">
+        <tr>
+            <th>number</th>
+            <th>title</th>
+            <th>author</th>
+            <th>date</th>
+        </tr>
+    </table><br><br>
+
+    <input type="text" id="in_author">
+    <button id="btn_search_author">작가 이름으로 검색</button><br><br>
+    <table id="table_search_author">
+        <tr>
+            <th>number</th>
+            <th>title</th>
+            <th>date</th>
+        </tr>
+    </table>
+
+
+    <h2>수정</h2>
+
+    <h2>삭제</h2>
+
+</body>
+
+</html>
