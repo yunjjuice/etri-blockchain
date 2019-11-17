@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <script src="https://code.jquery.com/jquery-latest.js "></script>
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
     <script>
         $(document).ready(function () {
             $('#btn_register').on('click', function () {
@@ -39,10 +39,12 @@
                         var newCell2 = newRow.insertCell(1);
                         var newCell3 = newRow.insertCell(2);
                         var newCell4 = newRow.insertCell(3);
+                        var newCell5 = newRow.insertCell(4);
                         newCell1.innerHTML = i + 1;
                         newCell2.innerHTML = data[i].title;
                         newCell3.innerHTML = data[i].author;
                         newCell4.innerHTML = data[i].published_date;
+                        newCell5.innerHTML = data[i]._id;
                     }
                 })
             });
@@ -51,25 +53,89 @@
                 console.log("author button click");
                 let author = $('#in_author').val();
 
-                $.get("/api/books/author/"+author, { author: author }, function (data) {
-                    console.log("data : " ,data);
+                $.get("/api/books/author/" + author, { author: author }, function (data) {
+                    console.log("data : ", data);
 
                     // 없는 작가명 검색했을 때
+                    if (data.error == '') {
+
+                    }
+                    if (data.error == "book not found") {
+
+                    }
 
                     // 오류 값 반환했을 때
-                    
+
 
                     var table = document.getElementById("table_search_author");
                     var length = Object.keys(data).length;
 
-                    for(var i=0 ; i<length ; i++){
-                        var newRow = table.insertRow(i+1);
+                    for (var i = 0; i < length; i++) {
+                        var newRow = table.insertRow(i + 1);
                         var newCell1 = newRow.insertCell(0);
                         var newCell2 = newRow.insertCell(1);
                         var newCell3 = newRow.insertCell(2);
-                        newCell1.innerHTML = i+1;
+                        newCell1.innerHTML = i + 1;
                         newCell2.innerHTML = data[i].title;
                         newCell3.innerHTML = data[i].published_date;
+                    }
+                })
+            })
+
+            $('#btn_update').on('click', function () {
+                console.log("update button click");
+                let id = new Object();
+                id.name = $('#in_update_id').val();
+
+                if (!id) {
+                    alert("수정하고싶은 id 값을 입력하세요");
+                    return;
+                }
+
+                let title = new Object();
+                title.name = $('#in_update_title').val();
+                let author = new Object();
+                author.name = $('#in_update_author').val();
+                let published_date = new Object();
+                published_date.name = $('#in_update_date').val();
+                //console.log("update title : ", title);
+
+                // 수정할 정보만 들어가면 되는데 만약 input에 비워두어 null값이라면?
+                $.ajax({
+                    url: '/api/books/' + id.name,
+                    type: 'PUT',
+                    dataType: 'json',
+                    data: {title:'title', author:'author', published_date:'published_date'},
+                    success: function (data, textStatus, xhr) {
+                        console.log(data);
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log('Error in Operation');
+                    }
+                })
+                /*
+                $.put("/api/books/"+id, {title:title, author:author, published_date:published_date}, function(data){
+                    console.log('data : ', data);
+                    if(data.message == "book updated"){
+                        alert("수정 완료!");
+                    }
+                })
+                */
+            })
+
+            $('#btn_delete').click(function() {
+                var id = new Object();
+                id.name = $('#in_delete_id').val();
+                $.ajax({
+                    url:'/api/books/'+id.name,
+                    type:'DELETE',
+                    dataType:'json',
+                    data:id,
+                    success:function(data, textStatus, xhr){
+                        alert("데이터가 삭제되었습니다");
+                    },
+                    error:function(xhr, textStatus, errorThrown){
+                        console.log('Error in Operation');
                     }
                 })
             })
@@ -98,6 +164,7 @@
             <th>title</th>
             <th>author</th>
             <th>date</th>
+            <th>id</th>
         </tr>
     </table><br><br>
 
@@ -111,10 +178,16 @@
         </tr>
     </table>
 
-
     <h2>수정</h2>
+    수정할 정보의 id <input type="text" id="in_update_id"><br><br>
+    수정할 제목 <input type="text" id="in_update_title"><br><br>
+    수정할 저자 <input type="text" id="in_update_author"><br><br>
+    수정할 날짜 <input type="text" id="in_update_date"><br><br>
+    <button id="btn_update">수정하기</button>
 
     <h2>삭제</h2>
+    삭제할 id <input type="text" id="in_delete_id"><br><br>
+    <button id="btn_delete">삭제하기</button>
 
 </body>
 
