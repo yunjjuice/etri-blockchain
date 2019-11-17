@@ -1,6 +1,7 @@
 module.exports = function (app, Book) {
 
     // 라우트를 수행합니다.
+    // html 문서를 가져온다
     app.get('/', function (req, res) {
         res.render('index.html') 
             //console.log("g");
@@ -43,10 +44,8 @@ module.exports = function (app, Book) {
             if (err) {
                 console.error(err);
                 res.send("0");
-                //res.json({ result: 0 });   
                 return;
             }
-            //res.json({ result: 1 });
             res.send("1");
         });
     });
@@ -57,7 +56,8 @@ module.exports = function (app, Book) {
             if (err) res.status(500).json({ error: 'database failure' });
             console.log(output);
             if (!output.n) return res.status(404).json({ error: 'book not found' });
-            res.json({ message: 'book updated' });
+            res.send("1");
+            //res.json({ message: 'book updated' });
         })
         /* [ ANOTHER WAY TO UPDATE THE BOOK ]
                 Book.findById(req.params.book_id, function(err, book){

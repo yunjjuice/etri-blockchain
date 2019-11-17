@@ -84,29 +84,27 @@
 
             $('#btn_update').on('click', function () {
                 console.log("update button click");
-                let id = new Object();
-                id.name = $('#in_update_id').val();
+                let id = $('#in_update_id').val();
 
                 if (!id) {
                     alert("수정하고싶은 id 값을 입력하세요");
                     return;
                 }
 
-                let title = new Object();
-                title.name = $('#in_update_title').val();
-                let author = new Object();
-                author.name = $('#in_update_author').val();
-                let published_date = new Object();
-                published_date.name = $('#in_update_date').val();
+                let title = $('#in_update_title').val();
+                let author = $('#in_update_author').val();
+                let published_date = $('#in_update_date').val();
+                console.log(title, author, published_date);
                 //console.log("update title : ", title);
 
                 // 수정할 정보만 들어가면 되는데 만약 input에 비워두어 null값이라면?
                 $.ajax({
-                    url: '/api/books/' + id.name,
+                    url: '/api/books/' + id,
                     type: 'PUT',
                     dataType: 'json',
-                    data: {title:'title', author:'author', published_date:'published_date'},
+                    data: { title: title, author: author, published_date: published_date },
                     success: function (data, textStatus, xhr) {
+                        alert("수정이 완료되었습니다");
                         console.log(data);
                     },
                     error: function (xhr, textStatus, errorThrown) {
@@ -123,18 +121,18 @@
                 */
             })
 
-            $('#btn_delete').click(function() {
+            $('#btn_delete').click(function () {
                 var id = new Object();
                 id.name = $('#in_delete_id').val();
                 $.ajax({
-                    url:'/api/books/'+id.name,
-                    type:'DELETE',
-                    dataType:'json',
-                    data:id,
-                    success:function(data, textStatus, xhr){
+                    url: '/api/books/' + id.name,
+                    type: 'DELETE',
+                    dataType: 'json',
+                    data: id,
+                    success: function (data, textStatus, xhr) {
                         alert("데이터가 삭제되었습니다");
                     },
-                    error:function(xhr, textStatus, errorThrown){
+                    error: function (xhr, textStatus, errorThrown) {
                         console.log('Error in Operation');
                     }
                 })
