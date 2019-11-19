@@ -1,0 +1,83 @@
+<!Doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script type="text/javascript" src="./lib/bignumber.min.js"></script>
+	<script type="text/javascript" src="./lib/web3-light.js"></script>
+</head>
+
+<body>
+	<!-- <input type="button" id="btn" value="getBalance" onclick="a()"> -->
+	amount <input type="text" id="input_amount">
+	<button id="btn_deposit">deposit</button><br><br>
+	<button id="btn_getB">getBalance</button><br><br>
+	<div id="getB"></div>
+</body>
+
+<script type="text/javascript">
+	web3 = new Web3(new Web3.providers.HttpProvider("http://:8545"))
+
+	var smartContract = web3.eth.contract([
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"name": "amount",
+					"type": "uint256"
+				}
+			],
+			"name": "deposit",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [],
+			"name": "getBalance",
+			"outputs": [
+				{
+					"name": "balance",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		}
+	]).at("0x1732e044df287d1d25419d9787b7ecc34af22a89");
+
+	console.log(smartContract);
+
+	$(document).ready(function () {
+		$("#btn_getB").click(function () {
+			console.log("click getBalance");
+			var balance = smartContract.getBalance.call().toString();
+			console.log(balance);
+			$("#getB").text(balance);
+		});
+
+		$("#btn_deposit").click(function () {
+			console.log("click deposit");
+			var amount = $("#input_amount").val();
+			console.log("amount ", amount);
+			smartContract.deposit(amount, {from:web3.eth.accounts[0]}, function(err, result){
+				if(err){
+
+				}
+				else {
+					var x = smartContract.getBalance.call();
+					$("#getB").text(x);
+				}
+			})
+		});
+	}); // end of document.ready
+
+
+
+</script>
+
+</html>
