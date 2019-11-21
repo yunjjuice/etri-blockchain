@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.2.3/milligram.min.css">
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="./lib/bignumber.min.js"></script>
+    <script type="text/javascript" src="./lib/web3-light.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+</head>
+
+<body>
+    <h3>BLOCKCHAIN EXPLORER</h3>
+    <table>
+        <tr>
+            <td colspan="2">
+                <h5>Last block number</h5>
+                <p id="lastBN"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" id="in_blockNum"><br>
+                <button id="btn_bn">블록 넘버 검색</button><br>
+            </td>
+            <td>
+                <input type="text" id="in_txhash"><br>
+                <button id="btn_th">트랜잭션 해쉬 보기</button><br>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p id="blockNum"></p>
+            </td>
+            <td>
+                <p id="txhash"></p>
+            </td>
+        </tr>
+    </table>
+</body>
+
+<script type="text/javascript">
+    // 블록넘버
+    // 트랜잭션 해쉬
+    web3 = new Web3(new Web3.providers.HttpProvider("http://13.125.150.187:8545"));
+
+    function callLastBN() {
+        var last = web3.eth.blockNumber;
+        //console.log("last block number ", last);
+        document.getElementById("lastBN").innerHTML = last;
+    }
+
+    var resultFunc = function (result) {
+        var input = "hash : " + result.hash + "<br>";
+        input += "miner : " + result.miner + "<br>";
+        input += "nonce : " + result.nonce + "<br>";
+        input += "size : " + result.size + "<br>";
+        document.getElementById("blockNum").innerHTML = input;
+    }
+
+    var callback = function (error, result) {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            console.log(result);
+            resultFunc(result);
+        }
+    }
+
+    var eventFunc = function () {
+        console.log("block number event function");
+        var blockNum = $("#in_blockNum").val();
+        web3.eth.getBlock(blockNum, callback);
+    }
+
+    $(document).ready(function () {
+        $("#btn_bn").click(eventFunc);
+
+        $("#btn_th").on('click', function () {
+            console.log("btn txhash click");
+            var txhash = $("#in_txhash").val();
+            var result = web3.eth.getTransaction(txhash);
+            console.log("transaction ", result);
+            var input = "blockHash : " + result.blockHash + "<br>";
+            input += "blockNumber : " + result.blockNumber + "<br>";
+            input += "from : " + result.from + "<br>";
+            input += "hash : " + result.hash + "<br>";
+            document.getElementById("txhash").innerHTML = input;
+        })
+    })
+</script>
+<script>
+    callLastBN();
+</script>
+
+
+</html>
