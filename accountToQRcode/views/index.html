@@ -46,18 +46,21 @@ $(document).ready(function(){
   });
 
   function makeCode () {		
-	let obj = document.getElementById("fromaddress");
-	let data = { "account": obj.value, "passwd": obj.value};
-	let elText = JSON.stringify(data);	
-	if (DEBUG) console.log("obj :" , obj.value);
-	if (DEBUG) console.log("elText :" , elText);
+    let addr = document.getElementById("fromaddress");
+    let prikey = document.getElementById("prikey");
+    
+	// let data = { "account": obj.value, "passwd": obj.value}; 
+    // let elText = JSON.stringify(data);	
+    
+	// if (DEBUG) console.log("obj :" , obj.value);
+	// if (DEBUG) console.log("elText :" , elText);
 	
-	if (!obj.value) {
+	if (!addr.value) {
 		alert("Input a text");
-		obj.focus();
+		addr.focus();
 		return;
 	}
-	qrcode.makeCode(elText);
+	qrcode.makeCode(addr.value + "," + prikey.value); // qr코드에 전자지갑주소랑 비밀번호 같이 넣는다
   } 
   
   $('#qrcodeBtn').on('click', function(){
