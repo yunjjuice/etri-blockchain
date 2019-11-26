@@ -1,0 +1,206 @@
+<!Doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="./lib/bignumber.min.js"></script>
+	<script type="text/javascript" src="./lib/web3-light.js"></script>
+	<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+	<h1>지갑</h1>
+	<!-- 연결된 어카운트 리스트 및 값 -->
+	<div id="tablePlace"></div><br>
+
+	<form>
+		<!-- 계정 만들기 -->
+		새로운 계정 비밀번호 : <br>
+		<input type="password" id="newAccPW">
+		<input type="button" id="newAccBtn" value="make account" onclick="makeAccount()"><br><br>
+
+		<!-- 보내는 사람 어카운트 -->
+		<select id="accountList"></select><br><br>
+
+		<!-- 받는 사람 주소-->
+		받는 사람 주소 : <br>
+		<input type="text" id="toAddr"><br><br>
+
+		<!-- 보낼 양 -->
+		보낼 양 : <br>
+		<input type="text" id="sendAmount"><br><br>
+
+		<!-- 비밀번호 -->
+		비밀번호 : <br>
+		<input type="password" id="pw"><br><br>
+
+		<!-- 버튼 -->
+		<input type="submit" id="transfer" value="TRANSFER" onclick="sendEth()">
+	</form>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript">
+		// 연결
+		var Web3 = require('web3');
+		var web3 = new Web3();
+		web3.setProvider(new web3.providers.HttpProvider("http://54.180.82.166:8545"));
+
+		// 마이닝 풀 어쩌구
+		web3._extend({
+			property: "miner",
+			methods: [
+				new web3._extend.Method({
+					name: "start",
+					call: "miner_start",
+					params: 1,
+					inputFormatter: [web3._extend.formatters.formatInputInt],
+					outputFormatter: web3._extend.formatters.formatOutputBool
+				}),
+				new web3._extend.Method({
+					name: "stop",
+					call: "miner_stop",
+					params: 1,
+					inputFormatter: [web3._extend.formatters.formatInputInt],
+					outputFormatter: web3._extend.formatters.formatOutputBool
+				}),
+				new web3._extend.Method({
+					name: "setExtra",
+					call: "miner_setExtra",
+					params: 1,
+					inputFormatter: [web3._extend.utils.formatInputString],
+					outputFormatter: web3._extend.formatters.formatOutputBool
+				}),
+				new web3._extend.Method({
+					name: "setGasPrice",
+					call: "miner_setGasPrice",
+					params: 1,
+					inputFormatter: [web3._extend.utils.formatInputString],
+					outputFormatter: web3._extend.formatters.formatOutputBool
+				}),
+				new web3._extend.Method({
+					name: "startAutoDAG",
+					call: "miner_startAutoDAG",
+					params: 0,
+					inputFormatter: [],
+					outputFormatter: web3._extend.formatters.formatOutputBool
+				}),
+				new web3._extend.Method({
+					name: "stopAutoDAG",
+					call: "miner_stopAutoDAG",
+					params: 0,
+					inputFormatter: [],
+					outputFormatter: web3._extend.formatters.formatOutputBool
+				}),
+				new web3._extend.Method({
+					name: "makeDAG",
+					call: "miner_makeDAG",
+					params: 1,
+					inputFormatter: [
+						web3._extend.formatters.inputDefaultBlockNumberFormatter
+					],
+					outputFormatter: web3._extend.formatters.formatOutputBool
+				})
+			],
+			properties: [
+				new web3._extend.Property({
+					name: "hashrate",
+					getter: "miner_hashrate",
+					outputFormatter: web3._extend.utils.toDecimal
+				})
+			]
+		})
+
+		function viewAccount() { // account 목록 불러오기
+			$("#accountList").empty();
+			var list = web3.eth.accounts;
+			for (var i = 0; i < list.length; i++) {
+				var option = "<option>" + list[i] + "</option>";
+				$("#accountList").append(option);
+			}
+		}
+
+		function refreshBalance() { // 잔액 확인
+			var list = web3.eth.accounts;
+			var table = document.getElementById('tablePlace');
+			var input = "<table><tr><th>account</th><th>balance</th></tr>";
+			for (var i = 0; i < list.length; i++) {
+				input += "<tr><td>" + list[i] + "</td><td>" + web3.fromWei(web3.eth.getBalance(list[i])) + "</td></tr>";
+			}
+			input += "</table>"
+			table.innerHTML = input;
+		}
+
+		/*
+		var callbackFunction = function (error, result) {
+			if (error) {
+				console.log(error);
+			} else {
+				console.log(result);
+			}
+		}
+		*/
+
+		function sendEth() { // 전송하기
+			var fromID = document.getElementById('accountList').value;
+			var toID = document.getElementById('toAddr').value;
+			var amount = document.getElementById('sendAmount').value;
+			var pw = document.getElementById('pw').value;
+
+			console.log(fromID);
+			console.log(toID);
+			console.log(amount);
+			console.log(pw);
+			//alert("wait");
+			//web3.personal.unlockAccount(fromID, pw)
+
+			if (web3.personal.unlockAccount(fromID, pw)) { // unlockAccount의 반환값은 true/false
+				web3.eth.sendTransaction({
+					from: fromID,
+					to: toID,
+					value: web3.toWei(amount, "ether")
+				});
+
+				// 전송 후 마이닝
+				
+
+				// 받는 사람의 밸류값이 증가될 때까지 채굴
+				/*
+				var prev = web3.eth.getBalance(toID);
+				web3.miner.start();
+				while (web3.eth.getBalance(toID) < prev) {
+					setTimeout(function () {
+						alert("mining...");
+					}, 2000);
+				}
+				web3.miner.stop();
+				*/
+				refreshBalance();
+			}
+			else {
+				alert("wrong pw");
+			}
+
+			//web3.eth.sendTransaction({from: fromID,to: toID,value: amount});
+		}
+
+		function makeAccount() {
+			var pw = document.getElementById("newAccPW").value;
+			web3.personal.newAccount(pw);
+			console.log(pw);
+			refreshBalance();
+			viewAccount();
+		}
+
+		/*
+		$("#transfer").click(function() {
+
+		})
+		*/
+	</script>
+	<script>
+		viewAccount();
+		refreshBalance();
+	</script>
+
+</body>
+
+</html>
