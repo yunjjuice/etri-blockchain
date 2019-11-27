@@ -24,26 +24,26 @@
         }
 
 		web3.eth.defaultAccount = web3.eth.accounts[0];
-		var passwd = 'eth';
+		var passwd = '1234';
 
 		var Coursetro = web3.eth.contract(
 			[
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "getInstructor",
-		"outputs": [
+		"constant": false,
+		"inputs": [
 			{
-				"name": "",
+				"name": "_fName",
 				"type": "string"
 			},
 			{
-				"name": "",
+				"name": "_age",
 				"type": "uint256"
 			}
 		],
+		"name": "setInstructor",
+		"outputs": [],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -64,26 +64,26 @@
 		"type": "event"
 	},
 	{
-		"constant": false,
-		"inputs": [
+		"constant": true,
+		"inputs": [],
+		"name": "getInstructor",
+		"outputs": [
 			{
-				"name": "_fName",
+				"name": "",
 				"type": "string"
 			},
 			{
-				"name": "_age",
+				"name": "",
 				"type": "uint256"
 			}
 		],
-		"name": "setInstructor",
-		"outputs": [],
 		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	}
 ]
 
-	).at("0xc847597c89cfe3c837bf2be4c76cd17809f66583");	
+	).at("0x5182ec26e9b2d907d1ef9b5f57e92e9fb1e4e909");	
 
 	function show(){		
 		document.getElementById("message").innerText = " ";
@@ -91,7 +91,7 @@
 		document.getElementById("message").appendChild(idiv);
 		var input ="<p>";
 
-		var instructorEvent = Coursetro.Instructor();
+		var instructorEvent = Coursetro.Instructor(); // event 등록
 		instructorEvent.watch(function(error, result){
 	        if (!error) {
 				input +="Result: " + result.args.age + "</p>";
