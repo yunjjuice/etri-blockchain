@@ -25,8 +25,13 @@ contract productContract {
         if(add) {
             productList[numberOfProducts] = pro;
             numberOfProducts++;
+            emit Instructor(numberOfProducts);
         }
     }
+    
+    event Instructor(
+        uint8 numOfProducts
+    );
 
     //제품 등록의 수를 리턴합니다.
     function getNumOfProducts() public constant returns(uint8) {

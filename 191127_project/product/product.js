@@ -30,6 +30,18 @@ var abi =
 		"type": "constructor"
 	},
 	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "numOfProducts",
+				"type": "uint8"
+			}
+		],
+		"name": "Instructor",
+		"type": "event"
+	},
+	{
 		"constant": true,
 		"inputs": [],
 		"name": "getNumOfProducts",

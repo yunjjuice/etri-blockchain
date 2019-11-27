@@ -25,8 +25,19 @@
 			exit;
 		}
 		
-		var contractAddress = "0x76b3be91512c365a7f94d178e82afe3f94430efc";
+		var contractAddress = "0xd0b90747a568052456af81f3fae007f95c5fc077";
 		var vc = web3.eth.contract(abi).at(contractAddress);
+
+		var instructorEvent = vc.Instructor();
+		instructorEvent.watch(function (error, result) {
+          if (!error) {
+			  console.log(result.args.numOfProducts);
+            $("#result").text(result.args.numOfProducts);
+          }
+          else {
+            console.log(error);
+          }
+        })
 
 		function showList() {
 			var table = document.getElementById("table1");
@@ -64,6 +75,7 @@
 		<input type="text" id="product" value="제주감귤">
 		<button onClick="addProduct()">제품 등록하기</button>
 	</div>
+	<p id="result"></p>
 	<table id="table1" />
 	<script>
 		showList();
