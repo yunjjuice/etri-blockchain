@@ -34,8 +34,13 @@ var abi =
 		"inputs": [
 			{
 				"indexed": false,
-				"name": "numOfProducts",
+				"name": "numberOfProducts",
 				"type": "uint8"
+			},
+			{
+				"indexed": false,
+				"name": "productList",
+				"type": "string"
 			}
 		],
 		"name": "Instructor",
