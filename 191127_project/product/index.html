@@ -64,9 +64,12 @@
 
 		function addProduct() {
 			var candidate = document.getElementById("product").value;
+			var candidate2 = document.getElementById("product2").value;
+			var candidate3 = document.getElementById("product3").value;
+			var input = candidate+' '+candidate2+' '+candidate3;
 			var account = document.getElementById("account").value;
 			if (web3.personal.unlockAccount(account, document.getElementById('pass').value)) {
-				vc.addProduct(candidate, { from: account, gas: 2000000 }, function (err, result) {
+				vc.addProduct(input, { from: account, gas: 2000000 }, function (err, result) {
 					if (!err) alert("트랜잭션이 성공적으로 전송되었습니다. \n" + result)
 				});
 			}
@@ -86,6 +89,8 @@
 	<br>
 	<div>
 		<input type="text" id="product" value="제주감귤">
+		<input type="text" id="product2" value="제주오메기떡">
+		<input type="text" id="product3" value="제주한라봉초콜렛">
 		<button onClick="addProduct()">제품 등록하기</button>
 	</div>
 	<p id="result"></p>
