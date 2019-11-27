@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<link rel='stylesheet' href='./style.css' type='text/css'/>
+	<link rel='stylesheet' href='./style.css' type='text/css' />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript" src="./lib/bignumber.min.js"></script>
 	<script type="text/javascript" src="./lib/web3-light.js"></script>
@@ -26,21 +26,39 @@
 			exit;
 		}
 
-		var contractAddress = "0x8192eb3187a406ed65eabd0b3d1b49f0d455dc37";
+		var contractAddress = "0x069d1c9e7481e0d7f749184407abca4ba8e99cf4";
 		var vc = web3.eth.contract(abi).at(contractAddress);
+
+		// 이벤트 추가
+		var eventAgri = vc.eventAgriculture();
+		eventAgri.watch(function (error, result) {
+			if (!error) {
+				showList();
+			}
+			else {
+				console.log(error);
+			}
+		});
 
 		function showList() {
 			var table = document.getElementById("table1");
 			var length = vc.getNumOfProducts();
+
+			// 원래 테이블 지우기
+			var Parent = document.getElementById("table1");
+			while (Parent.hasChildNodes()) {
+				Parent.removeChild(Parent.firstChild);
+			}
+
 			for (var i = 0; i < length; i++) {
 				var product = vc.getProductStruct(i);
 				var toString = product.toString();
 				// console.log("product: " + toString);
 				var strArray = toString.split(",");
 
-				var timestamp = new Date(strArray[3]*1000);
+				var timestamp = new Date(strArray[3] * 1000);
 				console.log("timestamp: " + timestamp);
-				console.log("timestamp: " + strArray[3]*1000);
+				console.log("timestamp: " + strArray[3] * 1000);
 
 				var row = table.insertRow();
 				var cell1 = row.insertCell(0);
@@ -50,7 +68,7 @@
 				cell1.innerHTML = strArray[0];
 				cell2.innerHTML = strArray[1];
 				cell3.innerHTML = strArray[2];
-				cell4.style.width ="60%";
+				cell4.style.width = "60%";
 				cell4.innerHTML = timestamp;
 			}
 		}
@@ -61,8 +79,8 @@
 			var proloc = document.getElementById("proloc").value;
 			var account = document.getElementById("account").value;
 			if (web3.personal.unlockAccount(account, document.getElementById('pass').value)) {
-				vc.addProStru(pronumber,proname,proloc, { from: account, gas: 2000000 }, function (err, result) {
-					if (!err) alert("트랜잭션이 성공적으로 전송되었습니다.\n" + result) 
+				vc.addProStru(pronumber, proname, proloc, { from: account, gas: 2000000 }, function (err, result) {
+					if (!err) alert("트랜잭션이 성공적으로 전송되었습니다.\n" + result)
 				});
 			}
 		}
@@ -73,10 +91,11 @@
 	<h1> 농산물 이력 관리</h1>
 	<div>
 		계정:
-		<input type="text" id="account" value="0xf28f4f34d43ab9b9b999c1a241a5277566632ac4">
+		<input type="text" id="account" value="0x6359651281cfb813cbe4a58d9f5a565aea47a592">
 		<p></p>
 		패스워드:
-		<input type="password" id="pass" value="eth"> </div>
+		<input type="password" id="pass" value="5678">
+	</div>
 	<br>
 	<div>
 		<input type="text" id="pronumber" placeholder="How many.." value=1>
@@ -89,4 +108,5 @@
 		showList();
 	</script>
 </body>
+
 </html>

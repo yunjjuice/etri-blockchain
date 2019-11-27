@@ -13,6 +13,13 @@ contract agricultureContract {
     }
 
     myStruct[] public productes;
+    
+    event eventAgriculture(
+        uint8 numberOfProducts,
+        uint number,
+        string productName,
+        string location
+        );
 
     constructor() public {        
         contractOwner = msg.sender;
@@ -21,6 +28,7 @@ contract agricultureContract {
     function addProStru (uint _initNumber, string _firstString, string _secondString) public {
         productes.push(myStruct(_initNumber,_firstString,_secondString, now)) -1;
         numberOfProducts++;
+        emit eventAgriculture(numberOfProducts, _initNumber, _firstString, _secondString);
     }
 
     //제품 등록의 수를 리턴합니다.
