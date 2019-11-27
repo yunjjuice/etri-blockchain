@@ -25,12 +25,13 @@ contract productContract {
         if(add) {
             productList[numberOfProducts] = pro;
             numberOfProducts++;
-            emit Instructor(numberOfProducts);
+            emit Instructor(numberOfProducts, productList[numberOfProducts]);
         }
     }
     
     event Instructor(
-        uint8 numOfProducts
+        uint8 numberOfProducts,
+        string productList
     );
 
     //제품 등록의 수를 리턴합니다.
