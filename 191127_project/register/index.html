@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<link rel='stylesheet' href='./style.css' type='text/css' />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="./lib/bignumber.min.js"></script>
+	<script type="text/javascript" src="./lib/web3-light.js"></script>
+	<script type="text/javascript" src="./contractabi.js"></script>
+	<!-- qrcode 생성을 위해 .js 파일 추가 -->
+	<script type="text/javascript" src="./lib/qrcode.js"></script>
+	<script type="text/javascript">
+
+		console.log('starting...');
+		//connect web3 and check if web3 is connected correctly
+		if (typeof web3 !== 'undefined') {
+			web3 = new Web3(web3.currentProvider);
+		} else {
+			// set the provider you want from Web3.providers
+			web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+		}
+
+		if (web3.isConnected()) {
+			console.log("connected");
+		} else {
+			console.log("not connected");
+			exit;
+		}
+
+		var contractAddress = "0x68e84a1b43c9342484b33dfd82513aaac5010a41";
+		var vc = web3.eth.contract(abi).at(contractAddress);
+
+		// 이벤트 추가
+		var registerEvent = vc.eventAccount();
+		registerEvent.watch(function (error, result) {
+			if (!error) {
+				create();
+			}
+			else {
+				console.log(error);
+			}
+		});
+
+		// account 생성
+		function create() {
+			let id = document.getElementById("id").value;
+			let password = document.getElementById("password").value;
+			let account = web3.personal.newAccount(password);
+			//vc.addAccount(account);
+			console.log("account: ", account);
+			$("#account").text(account);
+			makeQR(account);
+		}
+
+		
+		// QR코드 자리 만들어주기
+		let qrcode = new QRCode(document.getElementById("qrcode"), {
+			width: 250,
+			height: 250
+		});
+
+		function makeQR(_account) {
+			let account = _account;
+
+			/*
+			if (!account.value) {
+				alert("nothing");
+				return;
+			}
+			*/
+			console.log("makeQR Func account : ", account);
+			qrcode.makeCode(account);
+		}
+
+		function addAccount() {
+			var id = document.getElementById("id").value;
+			var password = document.getElementById("password").value;
+			var email = document.getElementById("email").value;
+			// 내 geth에서 실행하는 계정의 블록에 저장해야 되니까 내 어카운트 주소랑 비번 변수에 저장
+			var myAccount = "0x7fa4eb7bffb73cd193caf1218259bcb04a78926b";
+			var myPW = "1234";
+			if (web3.personal.unlockAccount(myAccount, myPW)) {
+				vc.addAccStru(id, password, email, { from: myAccount, gas: 2000000 }, function (err, result) {
+					if (!err) alert("트랜잭션이 성공적으로 전송되었습니다.\n" + result)
+				});
+			}
+		}
+
+	</script>
+</head>
+
+<body>
+	<h1> 계정 생성하기 </h1>
+	<div>
+		계정:
+		<input type="text" id="id" placeholder="id">
+		<p></p>
+		패스워드:
+		<input type="password" id="password" placeholder="password">
+		<p></p>
+		이메일:
+		<input type="text" id="email" placeholder="email">
+		<button id="button" onclick="addAccount()">회원가입하기</button>
+	</div>
+	<br>
+	<div id="account"></div>
+	<div id="qrcode" style="width:250px; height:250px; margin-top:15px;"></div>
+	<script>
+		//showList();
+	</script>
+</body>
+
+</html>
