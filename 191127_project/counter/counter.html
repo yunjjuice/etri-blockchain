@@ -40,55 +40,97 @@
       });
     }
 
-    var address = "0x1cbce38b076758376c6913f0c132464b4ca5c40a";
+    var address = "0xa5f18e641b771fe95cb68ba338346fdee1ff14d8";
     var abi = [
-      {
-        "constant": false,
-        "inputs": [],
-        "name": "decrement",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [],
-        "name": "increment",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "name": "_count",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "getCount",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      }
-    ];
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "decrement",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "increment",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_count",
+				"type": "uint256"
+			}
+		],
+		"name": "setInstructor",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"name": "_count",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "count",
+				"type": "uint256"
+			}
+		],
+		"name": "Instructor",
+		"type": "event"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getCount",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getInstructor",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
 
     $(function () {
       var counter;
+      // 이벤트 등록 변수
+      var instructorEvent;
 
       $('#getcount').click(function (e) {
         e.preventDefault();
@@ -130,6 +172,7 @@
                 "Call getCount again to see the latest count.");
             });
           });
+          
         }
 
       });
@@ -156,10 +199,10 @@
                 "Call getCount again to see the latest count.");
             });
           });
+          
         }
 
       })
-
 
       if (typeof (web3) !== "undefined") {
         error("Unable to find web3. " +
@@ -170,7 +213,20 @@
         web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
         log("Connected to the private network.");
         counter = web3.eth.contract(abi).at(address);
+
+        // 이벤트 등록
+        instructorEvent = counter.Instructor();
+        instructorEvent.watch(function (error, result) {
+          if (!error) {
+            $("#count").text(result.args.count);
+          }
+          else {
+            console.log(error);
+          }
+        })
+
         $('#getcount').click();
+
       }
     });
 
