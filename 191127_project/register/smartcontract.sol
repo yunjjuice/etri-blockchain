@@ -2,7 +2,7 @@ pragma solidity ^0.4.18;
 
 contract registerContract {
 
-    uint8 numberOfAccounts; // 총 계정의 수
+    uint8 numberOfInfo; // 총 계정의 수
     address contractOwner;
 
     struct myStruct {
@@ -11,42 +11,72 @@ contract registerContract {
         string email;
     }
 
-    myStruct[] public accounts;
-    
+    myStruct[] public info;
+    address[] public accounts;
+
     event eventAccount(
         string id,
         string pw,
-        string email
+        string email,
+        bool flag
         );
 
     constructor() public {        
         contractOwner = msg.sender;
     }
 
-    function addAccStru (string _id, string _pw, string _email) public {
+    function addInfoStru (string _id, string _pw, string _email) public {
         bool flag = true; // 중복확인
-        for (uint8 i = 0; i < numberOfAccounts; i++) {
+        for (uint8 i = 0; i < numberOfInfo; i++) {
             // 문자열 비교는 해쉬함수(sha3)를 통해서 할 수 있습니다.
-            if(keccak256(accounts[i].id) == keccak256(_id)){
+            if(keccak256(info[i].id) == keccak256(_id)){
                 flag = false; break;
             }
         }
         
         if(flag){
-            accounts.push(myStruct(_id, _pw, _email)) -1;
-            numberOfAccounts++;
-            emit eventAccount(_id, _pw, _email);
+            info.push(myStruct(_id, _pw, _email)) -1;
+            numberOfInfo++;
         }
+        emit eventAccount(_id, _pw, _email, flag);
     }
         
     // 계정 개수를 리턴
     function getNumOfAccounts() public constant returns(uint8) {
-        return numberOfAccounts;
+        return numberOfInfo;
     }
 
-    // 번호에 해당하는 계정의 id 리턴
+    // 번호에 해당하는 계정의 struct 리턴
     function getAccountStruct(uint _index) public view returns (string, string, string) {
-        return (accounts[_index].id, accounts[_index].pw, accounts[_index].email);
+        return (info[_index].id, info[_index].pw, info[_index].email);
+    }
+    
+    // 번호에 해당하는 id만 리턴
+    function getID(uint _index) public view returns (string){
+        return (info[_index].id);
+    }
+    
+    function addAccount(string _id, address _acc) public view returns (address){
+        bool flag = false;
+        uint index;
+        for (uint8 i = 0; i < numberOfInfo; i++) {
+            if(keccak256(info[i].id) == keccak256(_id)){
+                index = i;
+                flag = true;
+                break;
+            }
+        }
+        
+        if(flag){
+            accounts[index] = _acc;
+        }
+        
+        return accounts[index];
+    }
+    
+    // 번호에 해당하는 account만 리턴
+    function getAccount(uint _index) public view returns (address){
+        return accounts[_index];
     }
 
     //컨트랙트를 삭제합니다.

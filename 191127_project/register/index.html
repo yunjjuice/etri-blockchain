@@ -28,19 +28,30 @@
 			exit;
 		}
 
-		var contractAddress = "0x68e84a1b43c9342484b33dfd82513aaac5010a41";
+		var contractAddress = "0x642ce37cc0119c7d48f450a0ed209968e18b7e8c";
 		var vc = web3.eth.contract(abi).at(contractAddress);
 
 		// 이벤트 추가
 		var registerEvent = vc.eventAccount();
 		registerEvent.watch(function (error, result) {
 			if (!error) {
-				create();
+				console.log("flag: ", result.args.flag)
+				if (result.args.flag) { // 중복값이 없으면
+					create();
+					showList();
+					//showAccList();
+				}
+				else { // 중복값이 있으면
+					alert("이미 있는 id입니다");
+				}
 			}
 			else {
 				console.log(error);
 			}
 		});
+
+		var myAccount = "0x7fa4eb7bffb73cd193caf1218259bcb04a78926b";
+		var myPW = "1234";
 
 		// account 생성
 		function create() {
@@ -48,9 +59,15 @@
 			let id = document.getElementById("id").value;
 			let password = document.getElementById("password").value;
 			let account = web3.personal.newAccount(password);
-			//vc.addAccount(account);
 			console.log("account: ", account);
 			$("#account").text(account);
+			// account 저장
+			if(web3.personal.unlockAccount(myAccount, myPW)){
+				vc.addAccount(id, account, {from:myAccount, gas:2000000}, function (err, result){
+					console.log("SC addAccount: ",result);
+				})
+			}
+			// qr 코드 생성
 			let qr = document.getElementById("qrcode");
 			qr.innerHTML = "";
 			let qrcode = new QRCode(qr, account);
@@ -62,12 +79,35 @@
 			var password = document.getElementById("password").value;
 			var email = document.getElementById("email").value;
 			// 내 geth에서 실행하는 계정의 블록에 저장해야 되니까 내 어카운트 주소랑 비번 변수에 저장
-			var myAccount = "0x7fa4eb7bffb73cd193caf1218259bcb04a78926b";
-			var myPW = "1234";
+
 			if (web3.personal.unlockAccount(myAccount, myPW)) {
-				vc.addAccStru(id, password, email, { from: myAccount, gas: 2000000 }, function (err, result) {
-					if (!err) alert("트랜잭션이 성공적으로 전송되었습니다.\n" + result)
+				vc.addInfoStru(id, password, email, { from: myAccount, gas: 2000000 }, function (err, result) {
+					console.log("call smart contract add account");
+					alert("트랜잭션이 성공적으로 전송되었습니다.\n" + result)
 				});
+			}
+		}
+
+		function showList() {
+			console.log("show id list");
+			var table = document.getElementById("table1");
+			var length = vc.getNumOfAccounts();
+
+			// 원래 테이블 지우기
+			while (table.hasChildNodes()) {
+				table.removeChild(table.firstChild);
+			}
+
+			for (var i = 0; i < length; i++) {
+				console.log("showList index :", i);
+				var id = vc.getID(i).toString();
+				var account = vc.getAccount(i).toString();
+				console.log("showList getAccount: ", Number(account));
+				var row = table.insertRow(i);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				cell1.innerHTML = id;
+				cell2.innerHTML = account;
 			}
 		}
 
@@ -77,7 +117,7 @@
 <body>
 	<h1> 계정 생성하기 </h1>
 	<div>
-		계정:
+		ID:
 		<input type="text" id="id" placeholder="id">
 		<p></p>
 		패스워드:
@@ -88,8 +128,16 @@
 		<button id="button" onclick="addAccount()">회원가입하기</button>
 	</div>
 	<br>
+	<div>
+		<table id="table1" style="width:100%"></table><br>
+		<table id="table2" style="width:100%"></table>
+	</div>
 	<div id="account"></div>
 	<div id="qrcode" style="width:250px; height:250px; margin-top:15px;"></div>
+	
+	<script>
+		showList();
+	</script>
 </body>
 
 </html>

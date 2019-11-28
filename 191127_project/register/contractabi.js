@@ -1,5 +1,4 @@
-var abi = 
-[
+var abi = [
 	{
 		"constant": false,
 		"inputs": [
@@ -16,7 +15,7 @@ var abi =
 				"type": "string"
 			}
 		],
-		"name": "addAccStru",
+		"name": "addInfoStru",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -54,6 +53,11 @@ var abi =
 				"indexed": false,
 				"name": "email",
 				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "flag",
+				"type": "bool"
 			}
 		],
 		"name": "eventAccount",
@@ -70,16 +74,50 @@ var abi =
 		"name": "accounts",
 		"outputs": [
 			{
-				"name": "id",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_id",
 				"type": "string"
 			},
 			{
-				"name": "pw",
-				"type": "string"
-			},
+				"name": "_acc",
+				"type": "address"
+			}
+		],
+		"name": "addAccount",
+		"outputs": [
 			{
-				"name": "email",
-				"type": "string"
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_index",
+				"type": "uint256"
+			}
+		],
+		"name": "getAccount",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
 			}
 		],
 		"payable": false,
@@ -115,12 +153,58 @@ var abi =
 	},
 	{
 		"constant": true,
+		"inputs": [
+			{
+				"name": "_index",
+				"type": "uint256"
+			}
+		],
+		"name": "getID",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
 		"inputs": [],
 		"name": "getNumOfAccounts",
 		"outputs": [
 			{
 				"name": "",
 				"type": "uint8"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "info",
+		"outputs": [
+			{
+				"name": "id",
+				"type": "string"
+			},
+			{
+				"name": "pw",
+				"type": "string"
+			},
+			{
+				"name": "email",
+				"type": "string"
 			}
 		],
 		"payable": false,
