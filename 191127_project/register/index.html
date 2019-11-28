@@ -44,36 +44,31 @@
 
 		// account 생성
 		function create() {
+			console.log("create function");
 			let id = document.getElementById("id").value;
 			let password = document.getElementById("password").value;
 			let account = web3.personal.newAccount(password);
 			//vc.addAccount(account);
 			console.log("account: ", account);
 			$("#account").text(account);
-			makeQR(account);
+			var qrcode = new QRCode(document.getElementById("qrcode"), account);
+			//makeQR(account);
 		}
 
-		
-		// QR코드 자리 만들어주기
-		let qrcode = new QRCode(document.getElementById("qrcode"), {
-			width: 250,
-			height: 250
-		});
 
 		function makeQR(_account) {
+			console.log("make qr code function");
 			let account = _account;
 
-			/*
-			if (!account.value) {
-				alert("nothing");
-				return;
-			}
-			*/
 			console.log("makeQR Func account : ", account);
+			qrcode.clear();
 			qrcode.makeCode(account);
 		}
 
+
+
 		function addAccount() {
+			console.log("add account function");
 			var id = document.getElementById("id").value;
 			var password = document.getElementById("password").value;
 			var email = document.getElementById("email").value;
