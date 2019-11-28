@@ -83,9 +83,31 @@
 			var id = document.getElementById("id").value;
 			var password = document.getElementById("password").value;
 			var email = document.getElementById("email").value;
-			// 내 geth에서 실행하는 계정의 블록에 저장해야 되니까 내 어카운트 주소랑 비번 변수에 저장
 
-			if (web3.personal.unlockAccount(myAccount, myPW)) {
+			// 비밀번호랑 확인값이랑 같아야지 가입
+			var flag1 = false; // 비밀번호
+			var flag2 = false; // 이메일 확인
+			var pw1 = document.getElementById("password").value;
+			var pw2 = document.getElementById("rePW").value;
+
+
+
+			if (pw1 == pw2 && (pw1.length * 1) >= 6 ){
+				flag1 = true;
+			}
+			else {
+				alert("비밀번호가 짧거나 다릅니다. 확인해주세요.");
+			}
+
+			if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+				flag2 = true;
+			}
+			else {
+				alert("올바른 이메일을 입력해주세요");
+			}
+
+			// 내 geth에서 실행하는 계정의 블록에 저장해야 되니까 내 어카운트 주소랑 비번 변수에 저장
+			if (web3.personal.unlockAccount(myAccount, myPW) && flag1 && flag2) {
 				vc.addInfoStru(id, password, email, { from: myAccount, gas: 2000000 }, function (err, result) {
 					console.log("call smart contract add account");
 					alert("트랜잭션이 성공적으로 전송되었습니다.\n" + result)
@@ -127,7 +149,8 @@
 		<input type="text" id="id" placeholder="id">
 		<p></p>
 		패스워드:
-		<input type="password" id="password" placeholder="password">
+		<input type="password" id="password" placeholder="password"><br>
+		패스워드 확인: <input type="password" id="rePW" placeholder="re password">
 		<p></p>
 		이메일:
 		<input type="text" id="email" placeholder="email">
