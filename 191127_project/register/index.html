@@ -51,21 +51,10 @@
 			//vc.addAccount(account);
 			console.log("account: ", account);
 			$("#account").text(account);
-			var qrcode = new QRCode(document.getElementById("qrcode"), account);
-			//makeQR(account);
+			let qr = document.getElementById("qrcode");
+			qr.innerHTML = "";
+			let qrcode = new QRCode(qr, account);
 		}
-
-
-		function makeQR(_account) {
-			console.log("make qr code function");
-			let account = _account;
-
-			console.log("makeQR Func account : ", account);
-			qrcode.clear();
-			qrcode.makeCode(account);
-		}
-
-
 
 		function addAccount() {
 			console.log("add account function");
@@ -101,9 +90,6 @@
 	<br>
 	<div id="account"></div>
 	<div id="qrcode" style="width:250px; height:250px; margin-top:15px;"></div>
-	<script>
-		//showList();
-	</script>
 </body>
 
 </html>
