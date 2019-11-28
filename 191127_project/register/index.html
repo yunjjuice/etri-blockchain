@@ -28,7 +28,7 @@
 			exit;
 		}
 
-		var contractAddress = "0x642ce37cc0119c7d48f450a0ed209968e18b7e8c";
+		var contractAddress = "0x76e77507c167ad774a55832975343d6e6a8b1ef0";
 		var vc = web3.eth.contract(abi).at(contractAddress);
 
 		// 이벤트 추가
@@ -62,9 +62,14 @@
 			console.log("account: ", account);
 			$("#account").text(account);
 			// account 저장
-			if(web3.personal.unlockAccount(myAccount, myPW)){
-				vc.addAccount(id, account, {from:myAccount, gas:2000000}, function (err, result){
-					console.log("SC addAccount: ",result);
+			if (web3.personal.unlockAccount(myAccount, myPW)) {
+				vc.insertAccount(id, account, { from: myAccount, gas: 2000000 }, function (err, result) {
+					if (err) {
+						console.log("addAccount err:", err);
+					}
+					else {
+						console.log("SC addAccount: ", result.toString());
+					}
 				})
 			}
 			// qr 코드 생성
@@ -101,8 +106,9 @@
 			for (var i = 0; i < length; i++) {
 				console.log("showList index :", i);
 				var id = vc.getID(i).toString();
+				console.log("showList getID", id);
 				var account = vc.getAccount(i).toString();
-				console.log("showList getAccount: ", Number(account));
+				console.log("showList getAccount: ", account);
 				var row = table.insertRow(i);
 				var cell1 = row.insertCell(0);
 				var cell2 = row.insertCell(1);
@@ -134,7 +140,7 @@
 	</div>
 	<div id="account"></div>
 	<div id="qrcode" style="width:250px; height:250px; margin-top:15px;"></div>
-	
+
 	<script>
 		showList();
 	</script>

@@ -1,4 +1,5 @@
-var abi = [
+var abi =
+[
 	{
 		"constant": false,
 		"inputs": [
@@ -16,6 +17,24 @@ var abi = [
 			}
 		],
 		"name": "addInfoStru",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_id",
+				"type": "string"
+			},
+			{
+				"name": "_acc",
+				"type": "string"
+			}
+		],
+		"name": "insertAccount",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -67,83 +86,14 @@ var abi = [
 		"constant": true,
 		"inputs": [
 			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "accounts",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "_id",
-				"type": "string"
-			},
-			{
-				"name": "_acc",
-				"type": "address"
-			}
-		],
-		"name": "addAccount",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
 				"name": "_index",
-				"type": "uint256"
+				"type": "uint8"
 			}
 		],
 		"name": "getAccount",
 		"outputs": [
 			{
 				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "_index",
-				"type": "uint256"
-			}
-		],
-		"name": "getAccountStruct",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			},
-			{
-				"name": "",
-				"type": "string"
-			},
-			{
-				"name": "",
 				"type": "string"
 			}
 		],
@@ -156,11 +106,38 @@ var abi = [
 		"inputs": [
 			{
 				"name": "_index",
-				"type": "uint256"
+				"type": "uint8"
 			}
 		],
 		"name": "getID",
 		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_index",
+				"type": "uint8"
+			}
+		],
+		"name": "getInfoStruct",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
 			{
 				"name": "",
 				"type": "string"
