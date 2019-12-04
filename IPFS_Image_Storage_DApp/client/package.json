@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "ipfs-api": "^26.1.2",
     "ipfs-http-client": "^40.0.1",
     "react": "16.11.0",
     "react-dom": "16.11.0",

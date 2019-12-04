@@ -7,7 +7,14 @@ import ipfs from './ipfs'
 import "./App.css";
 
 class App extends Component {
-  state = { storageValue: 0, web3: null, accounts: null, contract: null };
+  state = {
+    storageValue: 0,
+    web3: null,
+    accounts: null,
+    contract: null,
+    buffer:null,
+    ipfsHash:''
+  };
 
   componentDidMount = async () => {
     try {
@@ -50,19 +57,52 @@ class App extends Component {
     this.setState({ storageValue: response });
   };
 
+captureFile= (event)=> {
+  event.preventDefault()
+  console.log('capture file...')
+  // 파일 받아오기
+  let self = this
+  const file = event.target.files[0]
+  const reader = new window.FileReader()
+  reader.readAsArrayBuffer(file)
+  reader.onloadend = () => {
+    self.setState({buffer:Buffer(reader.result)})
+    console.log('buffer', this.state.buffer);
+  }
+}
+
+onSubmit=(event)=> {
+  event.preventDefault() // 새로고침 막기 위해 써둠
+  console.log('on submit...')
+  let self = this
+  ipfs.add(this.state.buffer, (error, result) => {
+    console.log("error,",error)
+    console.log('result,', result)
+    if(error) {
+      console.error(error)
+      return
+    }
+
+    return self.setState({ipfsHash:result[0].hash}, () => {
+      console.log('ipfsHash', this.state.ipfsHash)
+    })
+  })
+  console.log("function end")
+}
+
   render() {
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
       <div className="App">
-        <h1>Good to Go!</h1>
-        <p>Your Truffle Box is installed and ready.</p>
-        <h2>Smart Contract Example</h2>
-        <p>
-          If your contracts compiled and migrated successfully, below will show
-          a stored value of 5 (by default).
-        </p>
+        <h1>Your Image</h1>
+        <p>This image is stored on IPFS & The Ethereum Blockchain!</p>
+        <h2>Upload Image</h2>
+        <form onSubmit={this.onSubmit}>
+          <input type='file' onChange={this.captureFile}/>
+          <input type='submit' />
+        </form>
         <p>
           Try changing the value stored on <strong>line 40</strong> of App.js.
         </p>
